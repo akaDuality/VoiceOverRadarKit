@@ -1,13 +1,13 @@
 import Foundation
 
-/// Drop-in accessibility exporter for DeviceHub.
+/// Streams the app's live accessibility tree for VoiceOver Radar.
 ///
 /// Add this package to your app and, in a DEBUG build, call
-/// `VoiceOverRadarKit.shared.start()` once at launch. DeviceHub can then read the
-/// current screen's accessibility tree from `http://<device>:8765/`.
+/// `VoiceOverRadarKit.shared.start()` once at launch. VoiceOver Radar then reads
+/// the current screen's accessibility tree from `http://localhost:8765/`.
 ///
-/// On the iOS Simulator, `localhost` is shared with the Mac, so DeviceHub reads
-/// `http://localhost:8765/`. On a physical device, use its LAN IP.
+/// The stream only runs on the **iOS Simulator** (where `localhost` is shared
+/// with the Mac); on a physical device `start()` is a no-op.
 @MainActor
 public final class VoiceOverRadarKit {
 
@@ -18,8 +18,12 @@ public final class VoiceOverRadarKit {
 
     private init() {}
 
-    /// Starts serving the accessibility snapshot. Idempotent.
+    /// Starts serving the accessibility snapshot on the Simulator only.
+    /// Idempotent; a no-op on physical devices.
     public func start(port: UInt16 = 8765) {
+        #if !targetEnvironment(simulator)
+        NSLog("[VoiceOverRadarKit] disabled: the stream only runs on the iOS Simulator.")
+        #else
         guard server == nil else { return }
         self.port = port
         do {
@@ -32,6 +36,7 @@ public final class VoiceOverRadarKit {
         } catch {
             NSLog("[VoiceOverRadarKit] failed to start on port \(port): \(error)")
         }
+        #endif
     }
 
     public func stop() {

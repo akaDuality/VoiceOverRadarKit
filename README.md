@@ -25,10 +25,9 @@ VoiceOverRadarKit.shared.start()   // serves on http://localhost:8765/
 #endif
 ```
 
-- On the **iOS Simulator**, `localhost` is shared with the Mac, so a companion
-  reads `http://localhost:8765/`.
-- On a **physical device**, use the device's LAN IP and add
-  `NSLocalNetworkUsageDescription` to Info.plist.
+The stream runs on the **iOS Simulator only** — `start()` is a no-op on a
+physical device. On the Simulator, `localhost` is shared with the Mac, so the
+companion reads `http://localhost:8765/`.
 
 ## What it serves
 
