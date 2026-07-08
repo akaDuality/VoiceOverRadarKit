@@ -172,9 +172,12 @@ public enum AccessibilityWalker {
         }
 
         // Accessibility container: a grouping VoiceOver's rotor treats as a unit.
+        // Only real containers count — a typed container or one that explicitly
+        // groups its children. (A labeled wrapper around a single element, e.g. a
+        // button with an icon child, is NOT a container.)
         let containerType = decodeContainerType(object.accessibilityContainerType)
         let isContainer = !children.isEmpty
-            && (containerType != nil || object.shouldGroupAccessibilityChildren || (!isElement && label != nil))
+            && (containerType != nil || object.shouldGroupAccessibilityChildren)
 
         let meaningful = isElement || label != nil || value != nil || !traits.isEmpty || isContainer
         if !meaningful {
