@@ -52,3 +52,10 @@ returns the updated snapshot:
 `id` is the per-element id from the snapshot.
 
 > For development/debugging use. Ship it behind `#if DEBUG`.
+
+## See also
+
+- [VoiceOver Satelite](https://github.com/akaDuality/VoiceOverSatelite) —
+  a macOS companion app that reads this stream: lists elements in VoiceOver
+  order, outlines them on the Simulator, and drives taps, adjust, custom
+  actions, and VoiceOver gestures.
